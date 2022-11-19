@@ -1,0 +1,77 @@
+body{
+    max-width: 960px;
+    margin: 0 auto;
+    font-family: 'Roboto', sans-serif;
+    background-color: #e8edf0;
+}
+.todoList{
+    height: 620px;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+}
+#addBtn{
+    display: block;
+    width: 100%;
+    height: 35px;
+    background-color: #fdfdfd;
+}
+#addBtn::placeholder{
+    color: black;
+    opacity: 1;
+    font-family: 16px;
+}
+
+p{
+    /* cursor: pointer; */
+    background: #f5f5f5;
+}
+
+.withContextMenu{
+    position: relative;
+}
+
+.contextMenu{
+    display: none;
+    position: absolute;
+    flex-direction: column;
+    width: fit-content;
+}
+
+
+
+
+
+
+
+
+.oneone {
+	/* overflow: hidden;
+	width: 265px;
+	margin: 0 auto; */
+}
+.oneone:not(:checked) > input {
+	display: none;
+}
+.oneone:not(:checked) > label {
+	float: right;
+	/* width: 42px; */
+	padding: 0;
+	cursor: pointer;
+	font-size: 32px;
+	line-height: 32px;
+	color: lightgrey;
+	text-shadow: 1px 1px #bbb;
+}
+.oneone:not(:checked) > label:before {
+	content: '★';
+}
+.oneone > input:checked ~ label {
+	color: gold;
+	text-shadow: 1px 1px #c60;
+}
+
+.oneone:not(:checked) > label:hover,
+.oneone:not(:checked) > label:hover ~ label {
+	color: gold;
+}

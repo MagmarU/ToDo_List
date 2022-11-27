@@ -3,6 +3,7 @@ body{
     margin: 0 auto;
     font-family: 'Roboto', sans-serif;
     background-color: #e8edf0;
+    /* background-color: black; */
 }
 .todoList{
     height: 620px;
@@ -25,20 +26,40 @@ body{
 p{
     /* cursor: pointer; */
     background: #f5f5f5;
+
 }
 
 .withContextMenu{
+    /* background-color: #bbb; */
+    
+    padding: 15px;
+    backdrop-filter: blur(5px);
     position: relative;
 }
 
+.withContextMenu p{
+    /* transition: opacity .1s; */
+    padding: 8px;
+    border-radius: 5px;
+    margin: 3px;
+}
+
+.withContextMenu p:hover {
+    background: #e6e6e6;
+}
 .contextMenu{
+    opacity: 0;
     display: none;
+
     position: absolute;
     flex-direction: column;
     width: fit-content;
+    transition: opacity .1s linear;
 }
-
-
+.contextMenu.open {
+    display: flex;
+    opacity: 1;
+}
 
 
 

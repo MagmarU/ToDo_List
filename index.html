@@ -22,12 +22,17 @@
         <div class="tasks withContextMenu"></div>
 
         <!-- Здесь будет контейнер для выполненных -->
-        <div class="completedTasks withContextMenu"></div>
+        <div hidden class="menu">
+            <span class="title">Завершенные <span class="counterClass">0</span></span>
+            <div class="completedTasks withContextMenu"></div>
+        </div>
         <!--  -->
         <div class="addTask">
             <input type="text" placeholder="Add a task" id="addBtn">
         </div>
     </div>
+
+
     <div class="contextMenu" id = 'contextMenu'>
         <input type="button" class = "contextButton" data-action = "markAsCompleted" value="Пометить как завершенные">
         <input hidden type="button" class = "contextButton" data-action = "markAsUnompleted" value="Пометить как незавершенные">
@@ -36,10 +41,7 @@
         <input hidden type="button" class = "contextButton" data-action = "favourites" value="Добавить в избранное">
         <input type="button" class = "contextButton" data-action = "delete" value="Удалить">
     </div>
-    <div class="oneone">
-        <input type="button" id="star">
-        <label for="star" title="1"></label>
-    </div>
+    
     
 </body>
 </html>

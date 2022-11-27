@@ -4,6 +4,11 @@ let add_Input_Field = document.querySelector( '#addBtn' );
 let contextMenu = document.getElementById( contextMenuIdName );
 let contextButtonClassName = 'contextButton';
 let tasksClassName = 'tasks';
+let titleClass = 'title';
+
+const divWithListClassName = 'menu';
+// const divWithList = document.querySelector(`.${divWithListClassName}`);
+
 const contextMenuOriginal = contextMenu.innerHTML;
 
 const favouritesDivClassName = 'favourites';
@@ -13,6 +18,7 @@ let divForTask = document.querySelector( `.${tasksClassName}` );
 const deleteDivClassName = 'delete';
 
 const completedTasksClassName = 'completedTasks';
+const counterClass = 'counterClass';
 let completedTasks = document.querySelector( `.${completedTasksClassName}` );
 
 let currentElement;
@@ -22,6 +28,10 @@ function init() {
     clickListener();
     contextListener();
     contextClickListener();
+    // counter( titleClass );
+    // checkingCount( divWithList, titleClass, counterClass );
+    // MutationFinishedElement( titleClass, counterClass );
+    MutationFinishedElement( divWithListClassName, titleClass, counterClass );
 }
 
 function addTask( elem ) {
@@ -35,6 +45,93 @@ function addTask( elem ) {
     elem.value = null;
 }
 
+function isEmpty( elem ) {
+    return Boolean( elem.childElementCount );
+}
+
+function MutationFinishedElement( menuClass, titleClass, counterClass ) {
+    // let title;
+    let title = document.querySelector( `.${titleClass}` ).nextElementSibling;
+    // console.log( title );
+    const config = {
+        childList: true,
+    };
+
+    const callback = function( mutationsList, observer ) {
+        for( let mutation of mutationsList ) {
+            if( mutation.type === 'childList' ) {
+                // checkingCount( menu, titleClass, counterClass );
+                let count = counter( mutation.target );
+                // title = mutation.target.previousSibling;
+                mutation.target.closest( `.${menuClass}` ).hidden = checkingCount( count );
+                // menu.hidden = checkingCount( count );
+                document.querySelector(`.${counterClass}`).innerHTML = count;
+                // console.log( menu );
+                // toggleFinishedMenuOn( menu );
+            }
+        }
+    }
+
+    const observer = new MutationObserver( callback );
+    observer.observe( title, config );
+}
+
+function checkingCount( count ) {
+    return count == 0 ? true : false;
+}
+// function toggleFinishedMenuOn( menu ) {
+//     // console.log( menu );
+//     menu.hidden = false;
+// }
+
+// function checkingCount( menu, titleClass, counterClass ) {
+//     let title = document.querySelector( `.${titleClass}` ).nextElementSibling;
+
+//     if( counter( title ) == 0) {
+
+//     }
+
+//     // let title = document.querySelector( `.${titleClass}` ).nextElementSibling;
+//     // if( counter( title ) == 0 ) {
+//     //     menu.hidden = true;
+//     //     MutationFinishedElement( menu, titleClass, counterClass );
+//     // } else {
+//     //     menu.hidden = false;
+
+//     //     // MutationFinishedElement( menu, titleClass, counterClass );
+        
+//     // }
+// }
+
+function counter( elem ) {
+    let result = elem.childElementCount;
+
+    // elem.hidden = result == 0 ? true : false;
+    // if( result == 0 ) elem.hidden = true;
+    return result;
+    
+    // return ;
+    // let titleElem = document.querySelector( `.${title}` ).nextElementSibling;
+    // MutationFinishedElement( titleElem );
+    // console.log( isEmpty( titleElem ) );
+
+
+    // titleElem.onchange = function() {
+    //     console.log( titleElem );
+    // };
+    
+    // titleElem.addEventListener( 'editing', (e) => console.log( e.detail ) );
+
+    // titleElem.dispatchEvent( new CustomEvent('editing', {
+    //     detail: {
+    //         value : this.childElementCount
+    //     }
+    // }));
+}
+
+
+
+
 add_Input_Field.addEventListener( 'keydown', function( event ) {
     if( event.key == 'Enter' ) {
         addTask( add_Input_Field );
@@ -44,7 +141,7 @@ add_Input_Field.addEventListener( 'keydown', function( event ) {
 function contextListener() {
 
     document.addEventListener( 'contextmenu', function( event ) {
-    if( clickInside( event, elementsWithContextMenuClassName ) ) {
+    if( clickInside( event, elementsWithContextMenuClassName, 'P' ) ) {
         checkContextButtons( event.target.closest( `.${elementsWithContextMenuClassName}` ) );
         toggleMenuOn( contextMenu, event );
     }
@@ -56,22 +153,31 @@ function toggleMenuOn( contextmenu, event ) {
 
     currentElement = event.target.closest('p');
 
-    contextmenu.style.display = 'flex';
+    contextmenu.classList.add( 'open' );
+    // contextmenu.style.opacity = '1';
+    // contextmenu.style.display = 'flex';
+    
     positionMenu( contextMenu, event );
     event.preventDefault();
 };
 
 function toggleMenuOff( contextmenu ) {
+    
+    // contextmenu.style.opacity = '0';
+    // contextMenu.style.display = 'none';
+    contextmenu.classList.remove( 'open' );
+    setTimeout( original, 100 );
 
-    contextmenu.innerHTML = contextMenuOriginal;
-    contextmenu.style.display = 'none';
+    function original() {
+        contextmenu.innerHTML = contextMenuOriginal;
+    }
 
 }
 
-function clickInside( e, className ) {
+function clickInside( e, className, tagname ) {
 
-    if( e.target.closest(`.${className}`) ) {
-
+    if( e.target.closest(`.${className}`) && e.target.tagName == tagname ) {
+        // console.log( e.target.tagName );
         return true;
 
     } else return false;
@@ -80,7 +186,8 @@ function clickInside( e, className ) {
 function clickListener() {
 
     document.addEventListener('click', function( event ) {
-        if( !clickInside( event ) ) toggleMenuOff( contextMenu );
+        toggleMenuOff( contextMenu );
+        // if( !clickInside( event ) ) toggleMenuOff( contextMenu ); //не понятная строчка, поэтому пока что пропущу.
     });
 
 }
@@ -135,7 +242,6 @@ function checkContextButtons( div ) {
 
 function showHiddenBtn( btn, action ) {
     btn.hidden = action;
-    // btn.hidden =  btn.hidden ? false : true;
 }
 
 
@@ -177,9 +283,9 @@ function clickHandler( e ) {
 
 function contextClickListener() {
     document.addEventListener( 'click', function( event ) {
-        if( clickInside( event, contextButtonClassName ) ) {
+        if( clickInside( event, contextButtonClassName, 'INPUT' ) ) {
             clickHandler( event );
-        }
+        } 
     });
 }
 

@@ -25,6 +25,7 @@ let currentElement;
 
 
 function init() {
+    AddBtnConfig( add_Input_Field );
     clickListener();
     contextListener();
     contextClickListener();
@@ -129,8 +130,21 @@ function counter( elem ) {
     // }));
 }
 
+function AddBtnConfig( btn ) {
+    
+    let placeholder = btn.placeholder;
+    btn.onfocus = () => btn.placeholder = '';
+    btn.onblur = () => btn.placeholder = placeholder;
 
+}
 
+// add_Input_Field.addEventListener( 'focus', function( event ) {
+//     let placeholderText = event.target.placeholder;
+//     event.target.placeholder = placeholderText ? '' : placeholderText;
+//     // if( event.target.placeholder ) {
+
+//     // }
+// });
 
 add_Input_Field.addEventListener( 'keydown', function( event ) {
     if( event.key == 'Enter' ) {

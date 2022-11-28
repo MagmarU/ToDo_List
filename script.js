@@ -7,7 +7,6 @@ let tasksClassName = 'tasks';
 let titleClass = 'title';
 
 const divWithListClassName = 'menu';
-// const divWithList = document.querySelector(`.${divWithListClassName}`);
 
 const contextMenuOriginal = contextMenu.innerHTML;
 
@@ -29,9 +28,6 @@ function init() {
     clickListener();
     contextListener();
     contextClickListener();
-    // counter( titleClass );
-    // checkingCount( divWithList, titleClass, counterClass );
-    // MutationFinishedElement( titleClass, counterClass );
     MutationFinishedElement( divWithListClassName, titleClass, counterClass );
 }
 
@@ -51,24 +47,21 @@ function isEmpty( elem ) {
 }
 
 function MutationFinishedElement( menuClass, titleClass, counterClass ) {
-    // let title;
     let title = document.querySelector( `.${titleClass}` ).nextElementSibling;
-    // console.log( title );
     const config = {
         childList: true,
     };
 
     const callback = function( mutationsList, observer ) {
+
         for( let mutation of mutationsList ) {
+            
             if( mutation.type === 'childList' ) {
-                // checkingCount( menu, titleClass, counterClass );
+                
                 let count = counter( mutation.target );
-                // title = mutation.target.previousSibling;
                 mutation.target.closest( `.${menuClass}` ).hidden = checkingCount( count );
-                // menu.hidden = checkingCount( count );
                 document.querySelector(`.${counterClass}`).innerHTML = count;
-                // console.log( menu );
-                // toggleFinishedMenuOn( menu );
+                
             }
         }
     }
@@ -80,54 +73,12 @@ function MutationFinishedElement( menuClass, titleClass, counterClass ) {
 function checkingCount( count ) {
     return count == 0 ? true : false;
 }
-// function toggleFinishedMenuOn( menu ) {
-//     // console.log( menu );
-//     menu.hidden = false;
-// }
-
-// function checkingCount( menu, titleClass, counterClass ) {
-//     let title = document.querySelector( `.${titleClass}` ).nextElementSibling;
-
-//     if( counter( title ) == 0) {
-
-//     }
-
-//     // let title = document.querySelector( `.${titleClass}` ).nextElementSibling;
-//     // if( counter( title ) == 0 ) {
-//     //     menu.hidden = true;
-//     //     MutationFinishedElement( menu, titleClass, counterClass );
-//     // } else {
-//     //     menu.hidden = false;
-
-//     //     // MutationFinishedElement( menu, titleClass, counterClass );
-        
-//     // }
-// }
 
 function counter( elem ) {
+
     let result = elem.childElementCount;
-
-    // elem.hidden = result == 0 ? true : false;
-    // if( result == 0 ) elem.hidden = true;
     return result;
-    
-    // return ;
-    // let titleElem = document.querySelector( `.${title}` ).nextElementSibling;
-    // MutationFinishedElement( titleElem );
-    // console.log( isEmpty( titleElem ) );
 
-
-    // titleElem.onchange = function() {
-    //     console.log( titleElem );
-    // };
-    
-    // titleElem.addEventListener( 'editing', (e) => console.log( e.detail ) );
-
-    // titleElem.dispatchEvent( new CustomEvent('editing', {
-    //     detail: {
-    //         value : this.childElementCount
-    //     }
-    // }));
 }
 
 function AddBtnConfig( btn ) {
@@ -137,14 +88,6 @@ function AddBtnConfig( btn ) {
     btn.onblur = () => btn.placeholder = placeholder;
 
 }
-
-// add_Input_Field.addEventListener( 'focus', function( event ) {
-//     let placeholderText = event.target.placeholder;
-//     event.target.placeholder = placeholderText ? '' : placeholderText;
-//     // if( event.target.placeholder ) {
-
-//     // }
-// });
 
 add_Input_Field.addEventListener( 'keydown', function( event ) {
     if( event.key == 'Enter' ) {
@@ -168,8 +111,6 @@ function toggleMenuOn( contextmenu, event ) {
     currentElement = event.target.closest('p');
 
     contextmenu.classList.add( 'open' );
-    // contextmenu.style.opacity = '1';
-    // contextmenu.style.display = 'flex';
     
     positionMenu( contextMenu, event );
     event.preventDefault();
@@ -177,8 +118,6 @@ function toggleMenuOn( contextmenu, event ) {
 
 function toggleMenuOff( contextmenu ) {
     
-    // contextmenu.style.opacity = '0';
-    // contextMenu.style.display = 'none';
     contextmenu.classList.remove( 'open' );
     setTimeout( original, 100 );
 
@@ -191,9 +130,7 @@ function toggleMenuOff( contextmenu ) {
 function clickInside( e, className, tagname ) {
 
     if( e.target.closest(`.${className}`) && e.target.tagName == tagname ) {
-        // console.log( e.target.tagName );
         return true;
-
     } else return false;
 }
 
@@ -201,7 +138,6 @@ function clickListener() {
 
     document.addEventListener('click', function( event ) {
         toggleMenuOff( contextMenu );
-        // if( !clickInside( event ) ) toggleMenuOff( contextMenu ); //не понятная строчка, поэтому пока что пропущу.
     });
 
 }
@@ -257,7 +193,6 @@ function checkContextButtons( div ) {
 function showHiddenBtn( btn, action ) {
     btn.hidden = action;
 }
-
 
 function addMarker( div, markerName ) {
     div.setAttribute( 'data-marker', markerName );

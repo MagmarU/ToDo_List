@@ -1,35 +1,25 @@
-let contextMenuIdName = 'contextMenu';
-let elementsWithContextMenuClassName = 'withContextMenu';
-let add_Input_Field = document.querySelector( '#addBtn' );
-let contextMenu = document.getElementById( contextMenuIdName );
-let contextButtonClassName = 'contextButton';
-let tasksClassName = 'tasks';
-let titleClass = 'title';
-
-const divWithListClassName = 'menu';
-
-const contextMenuOriginal = contextMenu.innerHTML;
-
-const favouritesDivClassName = 'favourites';
-const favouritesDiv = document.querySelector( `.${favouritesDivClassName}` );
-
-let divForTask = document.querySelector( `.${tasksClassName}` );
-const deleteDivClassName = 'delete';
-
-const completedTasksClassName = 'completedTasks';
-const counterClass = 'counterClass';
-let completedTasks = document.querySelector( `.${completedTasksClassName}` );
-
-let currentElement;
-
+import { counterVarElemFromModule } from './variablesModule.js';
 
 function init() {
-    AddBtnConfig( add_Input_Field );
+    AddBtnConfig( inputFieldFromModuleVar.addInputField );
     clickListener();
     contextListener();
     contextClickListener();
-    MutationFinishedElement( divWithListClassName, titleClass, counterClass );
+    MutationFinishedElement( 
+        counterVarElemFromModule.divWithListClassName, 
+        counterVarElemFromModule.titleClass, 
+        counterVarElemFromModule.counterClass );
 }
+
+import { inputFieldFromModuleVar } from './variablesModule.js';
+
+inputFieldFromModuleVar.addInputField.addEventListener( 'keydown', function( event ) {
+    if( event.key == 'Enter' ) {
+        addTask( inputFieldFromModuleVar.addInputField );
+    }
+});
+
+import { divsWithTasksFromModuleVar } from './variablesModule.js';
 
 function addTask( elem ) {
     let text = elem.value[0].toUpperCase() + elem.value.slice(1);
@@ -37,13 +27,9 @@ function addTask( elem ) {
     let newP = document.createElement('p');
     newP.innerHTML = `<span>${text}</span>`;
 
-    divForTask.append( newP );
+    divsWithTasksFromModuleVar.divForTask.append( newP );
     addMarker( newP, 'tasks' );
     elem.value = null;
-}
-
-function isEmpty( elem ) {
-    return Boolean( elem.childElementCount );
 }
 
 function MutationFinishedElement( menuClass, titleClass, counterClass ) {
@@ -89,22 +75,21 @@ function AddBtnConfig( btn ) {
 
 }
 
-add_Input_Field.addEventListener( 'keydown', function( event ) {
-    if( event.key == 'Enter' ) {
-        addTask( add_Input_Field );
-    }
-});
+import { contexmenuFromModule } from './variablesModule.js';
 
 function contextListener() {
 
     document.addEventListener( 'contextmenu', function( event ) {
-    if( clickInside( event, elementsWithContextMenuClassName, 'P' ) ) {
-        checkContextButtons( event.target.closest( `.${elementsWithContextMenuClassName}` ) );
-        toggleMenuOn( contextMenu, event );
-    }
+        let elem = contexmenuFromModule.elementsWithContextMenuClassName;
+        if( clickInside( event, elem, 'P' ) ) {
+            checkContextButtons( event.target.closest( `.${elem}` ) );
+            toggleMenuOn( contexmenuFromModule.contextMenu, event );
+        }
     });
 
 }
+
+let currentElement;
 
 function toggleMenuOn( contextmenu, event ) {
 
@@ -112,9 +97,11 @@ function toggleMenuOn( contextmenu, event ) {
 
     contextmenu.classList.add( 'open' );
     
-    positionMenu( contextMenu, event );
+    positionMenu( contexmenuFromModule.contextMenu, event );
     event.preventDefault();
 };
+
+import { contextMenuOriginal } from './variablesModule.js';
 
 function toggleMenuOff( contextmenu ) {
     
@@ -132,14 +119,6 @@ function clickInside( e, className, tagname ) {
     if( e.target.closest(`.${className}`) && e.target.tagName == tagname ) {
         return true;
     } else return false;
-}
-
-function clickListener() {
-
-    document.addEventListener('click', function( event ) {
-        toggleMenuOff( contextMenu );
-    });
-
 }
 
 function getCursorPosition( e ) {
@@ -163,10 +142,34 @@ function getCursorPosition( e ) {
 
 }
 
+function showHiddenBtn( btn, action ) {
+    btn.hidden = action;
+}
+
+function addMarker( div, markerName ) {
+    div.setAttribute( 'data-marker', markerName );
+}
+
+function markerHandler( elem ) {
+    let returnToThisClassDiv = {
+        'favourites': divsWithTasksFromModuleVar.favouritesDiv,
+        'tasks': divsWithTasksFromModuleVar.divForTask
+    }
+    return returnToThisClassDiv[ elem.dataset.marker ];
+}
+
 function positionMenu( contextmenu, e ) {
     let clickCoords = getCursorPosition( e );
     contextmenu.style.top = clickCoords.y + 'px';
     contextmenu.style.left = clickCoords.x + 'px';
+
+}
+
+function clickListener() {
+
+    document.addEventListener('click', function( event ) {
+        toggleMenuOff( contexmenuFromModule.contextMenu );
+    });
 
 }
 
@@ -180,7 +183,7 @@ function checkContextButtons( div ) {
         },
         completedTasks() {
             showHiddenBtn( document.querySelector( '[data-action = "markAsCompleted"]' ), true )
-            return 'markAsUnompleted';
+            return 'markAsUncompleted';
         }
     };
     
@@ -190,52 +193,36 @@ function checkContextButtons( div ) {
     showHiddenBtn( btnsName, false );
 };
 
-function showHiddenBtn( btn, action ) {
-    btn.hidden = action;
-}
-
-function addMarker( div, markerName ) {
-    div.setAttribute( 'data-marker', markerName );
-}
-
-function markerHandler( elem ) {
-    returnToThisClassDiv = {
-        'favourites': favouritesDiv,
-        'tasks': divForTask
-    }
-    return returnToThisClassDiv[ elem.dataset.marker ];
+function contextClickListener() {
+    document.addEventListener( 'click', function( event ) {
+        if( clickInside( event, contexmenuFromModule.contextButtonClassName, 'INPUT' ) ) {
+            clickHandler( event );
+        } 
+    });
 }
 
 function clickHandler( e ) {
     let actionHandler = {
         favourites() {
-            favouritesDiv.append( currentElement );
+            divsWithTasksFromModuleVar.favouritesDiv.append( currentElement );
             addMarker( currentElement, 'favourites' );
         },
         delete() {
             currentElement.remove();
         },
         deleteFromFavourites() {
-            divForTask.append( currentElement );
+            divsWithTasksFromModuleVar.divForTask.append( currentElement );
             addMarker( currentElement, 'tasks' );
         },
-        markAsUnompleted() {
+        markAsUncompleted() {
             markerHandler( currentElement ).append( currentElement );
         },
         markAsCompleted() {
-            completedTasks.append( currentElement );
+            divsWithTasksFromModuleVar.completedTasks.append( currentElement );
         }
 
     }
     actionHandler[e.target.dataset.action]();
-}
-
-function contextClickListener() {
-    document.addEventListener( 'click', function( event ) {
-        if( clickInside( event, contextButtonClassName, 'INPUT' ) ) {
-            clickHandler( event );
-        } 
-    });
 }
 
 init();

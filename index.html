@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script defer src="script.js"></script>
+    <script defer type = "module" src="script.js"></script>
+    <!-- <script src="variablesModule.js"></script> -->
+    
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,7 +39,7 @@
 
     <div class="contextMenu" id = 'contextMenu'>
         <input type="button" class = "contextButton" data-action = "markAsCompleted" value="Пометить как завершенные">
-        <input hidden type="button" class = "contextButton" data-action = "markAsUnompleted" value="Пометить как незавершенные">
+        <input hidden type="button" class = "contextButton" data-action = "markAsUncompleted" value="Пометить как незавершенные">
 
         <input hidden type="button" class = "contextButton" data-action = "deleteFromFavourites" value="Удалить из избранного">
         <input hidden type="button" class = "contextButton" data-action = "favourites" value="Добавить в избранное">

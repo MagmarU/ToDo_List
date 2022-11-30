@@ -1,20 +1,22 @@
 *{
     box-sizing: border-box;
 }
+
 body{
     max-width: 960px;
     margin: 0 auto;
     font-family: 'Roboto', sans-serif;
     background-color: #e8edf0;
 }
+
 .todoList{
     height: 620px;
     display: flex;
     flex-flow: column;
     justify-content: space-between;
 }
+
 #addBtn{
-    /* box-sizing: border-box; */
     user-select: none;
     padding: 8px;
     border: none;
@@ -24,7 +26,6 @@ body{
     height: 35px;
     background-color: #fdfdfd;
 }
-
 
 #addBtn:hover{
     background-color: #eeeded;
@@ -37,19 +38,14 @@ body{
 }
 
 p{
-    /* cursor: pointer; */
     background: #f5f5f5;
-
 }
 
 .withContextMenu{
-    /* background-color: #bbb; */
     padding: 10px;
-    /* position: relative; */
 }
 
 .withContextMenu p{
-    /* transition: opacity .1s; */
     padding: 8px;
     border-radius: 5px;
     margin: 3px;
@@ -58,15 +54,16 @@ p{
 .withContextMenu p:hover {
     background: #e6e6e6;
 }
+
 .contextMenu{
     opacity: 0;
     display: none;
-
     position: absolute;
     flex-direction: column;
     width: fit-content;
     transition: opacity .1s linear;
 }
+
 .contextMenu.open {
     display: flex;
     opacity: 1;
@@ -74,11 +71,9 @@ p{
 
 .title{
     display: inline-block;
-    /* display: inline; */
     padding: 10px;
     background-color: #f5f5f5;
     border-radius: 5px;
-    /* margin: 5px; */
 }
 
 .title:hover{
